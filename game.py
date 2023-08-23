@@ -4,7 +4,6 @@ Casino Game
 This module simulates an online casino game with user authentication and role-based access.
 It includes classes and functions for playing casino games, managing user coins, and handling payouts.
 """
-
 import random
 import time
 
@@ -173,6 +172,59 @@ def main():
             break
         else:
             print('Invalid choice. Please select a valid role.')
+def admin_menu(username):
+    """
+    Display the admin menu and handle admin actions.
+    
+    This function presents a menu with options for an admin user, such as managing player coins
+    and logging out. It handles the user's input and directs them to the appropriate actions.
+    
+    Args:
+        username (str): The username of the admin user.
+    """
+    print(f'Welcome, {username} (Administrator)!')
+    while True:
+        print('\nAdmin Menu:')
+        print('1. Manage Coins for Players')
+        print('2. Log Out')
+        choice = input('Select an option: ')
+        
+        if choice == '1':
+            manage_coins()
+        elif choice == '2':
+            print(f'Goodbye, {username}!')
+            break
+        else:
+            print('Invalid choice. Please select a valid option.')
 
+def player_menu(username):
+    """
+    Display the player menu and handle player actions.
+    
+    This function presents a menu with options for a player user, such as playing a game,
+    cashing out winnings, and logging out. It handles the user's input and directs them
+    to the appropriate actions.
+    
+    Args:
+        username (str): The username of the player user.
+    """
+    game = CasinoGame()
+    print(f'Welcome, {username} (Player)!')
+    while True:
+        print('\nPlayer Menu:')
+        print('1. Play Game')
+        print('2. Cash Out')
+        print('3. Log Out')
+        choice = input('Select an option: ')
+        
+        if choice == '1':
+            game.play_game()
+        elif choice == '2':
+            game.cash_out()
+        elif choice == '3':
+            print(f'Goodbye, {username}!')
+            break
+        else:
+            print('Invalid choice. Please select a valid option.')
 if __name__ == '__main__':
     main()
