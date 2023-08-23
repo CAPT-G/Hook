@@ -33,12 +33,12 @@ class RandomNumberSelector:
         
     Attributes:
         odds (int): The odds of selecting a number, represented as a percentage.
-    """
-    def __init__(self, odds):
+        """
+def __init__(self, odds):
         self.odds = odds
     
-    def generate_number(self):
-  """
+def generate_number(self):
+        """
         Generate a random number based on the specified odds.
         
         Returns:
@@ -77,7 +77,7 @@ class CasinoGame:
         self._number_selector = RandomNumberSelector(odds=self.playable_odds)
     
     def play_game(self):
-"""
+        """
         Play a casino game.
         
         Plays a game based on the specified odds and updates user coins and winnings accordingly.
@@ -96,7 +96,7 @@ class CasinoGame:
             print("You don't have enough coins to play.")
     
     def cash_out(self):
-  """
+        """
         Cash out user winnings.
         
         Allows the user to cash out their winnings in exchange for coins.
@@ -122,9 +122,8 @@ def admin_login(username, password):
     Returns:
         bool: True if the provided credentials are valid for an admin user, False otherwise.
     """
-    if username in users and users[username]['password'] == password and users[username]['role'] == 'admin':
-        return True
-    return False
+   if username in users and users[username]['password'] == password and users[username]['role'] == 'admin':
+        return True; return False
 
 def user_login(username, password):
  """
@@ -139,9 +138,8 @@ def user_login(username, password):
     Returns:
         bool: True if the provided credentials are valid for a player user, False otherwise.
     """
-    if username in users and users[username]['password'] == password and users[username]['role'] == 'player':
-        return True
-    return False
+ if username in users and users[username]['password'] == password and users[username]['role'] == 'player':
+        return True; return False
 
 def main():
  """
@@ -150,10 +148,10 @@ def main():
     This function welcomes the user to the Casino Game, provides a menu to select a role
     (admin/player/quit), and directs the user to the appropriate menus based on their choice.
     """
-    print('Welcome to the Casino Game!')
-    current_time = time.ctime()
-    print(f'Current time: {current_time}')
-    while True:
+ print('Welcome to the Casino Game!')
+ current_time = time.ctime()
+ print(f'Current time: {current_time}')
+ while True:
         choice = input('Enter your role (admin/player/quit): ')
         if choice == 'admin':
             admin_username = input('Enter admin username: ')
@@ -185,8 +183,8 @@ def admin_menu(username):
     Args:
         username (str): The username of the admin user.
     """
-    print(f'Welcome, {username} (Administrator)!')
-    while True:
+ print(f'Welcome, {username} (Administrator)!')
+ while True:
         print('\nAdmin Menu:')
         print('1. Manage Coins for Players')
         print('2. Log Out')
@@ -207,16 +205,16 @@ def manage_coins():
     for a player's username, an action (add/cashout), and the amount of coins. Based on the
     action, it either adds or cashes out the specified number of coins for the player.
     """
-    player_username = input('Enter player username: ')
-    action = input('Enter action (add/cashout): ')
-    coins = int(input('Enter coins: '))
-    if action == 'add':
+ player_username = input('Enter player username: ')
+ action = input('Enter action (add/cashout): ')
+ coins = int(input('Enter coins: '))
+ if action == 'add':
         add_coins(player_username, coins)
         print(f'{coins} coins added to {player_username}.')
-    elif action == 'cashout':
+ elif action == 'cashout':
         cash_out_coins(player_username, coins)
         print(f'{coins} coins cashed out from {player_username}.')
-    else:
+ else:
         print('Invalid action.')
 
 def add_coins(username, amount):
@@ -229,7 +227,7 @@ def add_coins(username, amount):
         username (str): The username of the player.
         amount (int): The number of coins to be added.
     """
-    if username in users and users[username]['role'] == 'player':
+ if username in users and users[username]['role'] == 'player':
         users[username]['coins'] += amount
 
 def cash_out_coins(username, amount):
@@ -242,10 +240,20 @@ def cash_out_coins(username, amount):
         username (str): The username of the player.
         amount (int): The number of coins to be cashed out.
     """
-    if username in users and users[username]['role'] == 'player' and users[username]['coins'] >= amount:
+ if username in users and users[username]['role'] == 'player' and users[username]['coins'] >= amount:
         users[username]['coins'] -= amount
 
 def player_menu(username):
+    """
+    Display the player menu and handle player actions.
+    This function presents a menu with options for a player user, such as playing a game,
+    cashing out winnings, and logging out. It handles the the user's input and directs them
+    to the appropriate actions.
+    Args:
+        username (str): The user name of the player.
+    Returns
+        none
+    """
     game = CasinoGame()
     print(f'Welcome, {username} (Player)!')
     while True:
@@ -266,4 +274,3 @@ def player_menu(username):
 
 if __name__ == '__main__':
     main()
-
