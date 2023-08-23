@@ -191,66 +191,28 @@ def admin_menu(username):
         
         if choice == '1':
             manage_coins()
-def manage_coins(username, action, coins):
+        elif choice == '2':
+            print(f'Goodbye, {username}!')
+            break
+        else:
+            print('Invalid choice. Please select a valid option.')
+def manage_coins():
     """
     Manage player coins.
     
     This function allows an admin user to manage the coins of a player. It prompts the admin
     for a player's username, an action (add/cashout), and the amount of coins. Based on the
     action, it either adds or cashes out the specified number of coins for the player.
-    
-    Args:
-        username (str): The username of the player.
-        action (str): The action to perform (add or cashout).
-        coins (int): The number of coins to be added or cashed out.
     """
-    if username in users and users[username]['role'] == 'player':
-        if action == 'add':
-            users[username]['coins'] += coins
-            print(f'{coins} coins added to {username}.')
-        elif action == 'cashout':
-            if users[username]['coins'] >= coins:
-                users[username]['coins'] -= coins
-                print(f'{coins} coins cashed out from {username}.')
-            else:
-                print('Insufficient coins to cash out.')
-        else:
-            print('Invalid action.')
+    username = input('Enter player username: ')
+    action = input('Enter action (add/cashout): ')
+    coins = int(input('Enter coins: '))
+    
+    if action == 'add':
+        add_coins(username, coins)
+    elif action == 'cashout':
+        cash_out_coins(username, coins)
     else:
-        print(f'Player "{username}" not found or not a valid player.')
-        elif choice == '2':
-            print(f'Goodbye, {username}!')
-            break
-        else:
-            print('Invalid choice. Please select a valid option.')
-def player_menu(username):
-    """
-    Display the player menu and handle player actions.
-    
-    This function presents a menu with options for a player user, such as playing a game,
-    cashing out winnings, and logging out. It handles the user's input and directs them
-    to the appropriate actions.
-    
-    Args:
-        username (str): The username of the player user.
-    """
-    game = CasinoGame()
-    print(f'Welcome, {username} (Player)!')
-    while True:
-        print('\nPlayer Menu:')
-        print('1. Play Game')
-        print('2. Cash Out')
-        print('3. Log Out')
-        choice = input('Select an option: ')
-        
-        if choice == '1':
-            game.play_game()
-        elif choice == '2':
-            game.cash_out()
-        elif choice == '3':
-            print(f'Goodbye, {username}!')
-            break
-        else:
-            print('Invalid choice. Please select a valid option.')
+        print('Invalid action.')
 if __name__ == '__main__':
     main()
