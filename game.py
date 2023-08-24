@@ -217,7 +217,21 @@ def player_menu(username):
             break
         else:
             print('Invalid choice. Please select a valid option.')
+def get_user_info(user_dict, username):
+    """
+    Get user information from the user dictionary.
 
+    Args:
+        user_dict (dict): A dictionary containing user information.
+        username (str): The username to retrieve information for.
+
+    Returns:
+        dict: User information dictionary if the username exists, None otherwise.
+    """
+    if username in user_dict:
+        return user_dict[username]
+    else:
+        return None
 def main():
     print('Welcome to the Casino Game!')
     current_time = time.ctime()
