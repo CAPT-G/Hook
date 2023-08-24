@@ -68,23 +68,23 @@ def generate_number(self):
         else:
             return False
 def play_game(self):
-        """
-        Play a casino game.
+    """
+    Play a casino game.
 
-        Plays a game based on the specified odds and updates user coins and winnings accordingly.
-        """
-        if self.user_coins >= self.purchase_amount:
+    Plays a game based on the specified odds and updates user coins and winnings accordingly.
+    """
+    if self.user_coins >= self.purchase_amount:
         if self._number_selector.generate_number():
-           self.user_winnings += self.purchase_amount * 5
-           self.user_coins -= self.purchase_amount
-        if self.user_winnings > self.max_payout:
-           self.user_winnings -= self.max_payout
+            self.user_winnings += self.purchase_amount * 5
+            self.user_coins -= self.purchase_amount
+            if self.user_winnings > self.max_payout:
+                self.user_winnings -= self.max_payout
             print(f"Congratulations! You won {self.purchase_amount * 5} coins.")
         else:
             self.user_coins -= self.purchase_amount
             print("Better luck next time. You lost.")
-        else:
-            print("You don't have enough coins to play.")
+    else:
+        print("You don't have enough coins to play.")
 def cash_out(self):
         """
         Cash out user winnings.
