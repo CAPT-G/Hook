@@ -16,7 +16,7 @@ class RandomNumberSelector:
         Args:
             odds (int): The odds of selecting a number, represented as a percentage.
         """
-    def __init__(self, odds):
+def __init__(self, odds):
         """
         A class to generate random numbers based on given odds.
 
@@ -24,8 +24,7 @@ class RandomNumberSelector:
             odds (int): The odds of selecting a number, represented as a percentage.
         """
         self.odds = odds
-
-    def generate_number(self):
+def generate_number(self):
         """
         Generate a random number based on the specified odds.
 
@@ -53,7 +52,7 @@ class CasinoGame:
         _number_selector (RandomNumberSelector): An instance of the RandomNumberSelector
                                                  class used to generate random numbers for games.
     """
-    def __init__(self):
+def __init__(self):
         """
         A class representing an online casino game.
 
@@ -72,7 +71,7 @@ class CasinoGame:
         self.purchase_amount = 200
         self.playable_odds = 10
         self._number_selector = RandomNumberSelector(odds=self.playable_odds)
-     def generate_number(self):
+def generate_number(self):
         """
         Generate a random number based on the specified odds.
         
@@ -83,7 +82,7 @@ class CasinoGame:
             return True
         else:
             return False
-    def play_game(self):
+def play_game(self):
         """
         Play a casino game.
 
@@ -102,7 +101,7 @@ class CasinoGame:
         else:
             print("You don't have enough coins to play.")
 
-    def cash_out(self):
+def cash_out(self):
         """
         Cash out user winnings.
 
@@ -116,7 +115,7 @@ class CasinoGame:
         else:
             print("You don't have enough winnings to cash out.")
 
-    def main_menu(self):
+def main_menu(self):
         """
         Display the main menu and handle user actions.
 
@@ -272,40 +271,39 @@ def main():
     This function welcomes the user to the Casino Game, provides a menu to select a role
     (admin/player/quit), and directs the user to the appropriate menus based on their choice.
     """
-    print('Welcome to the Casino Game!')
-    current_time = time.ctime()
-    print(f'Current time: {current_time}')
-    while True:
-        choice = input('Enter your role (admin/player/quit): ')
-        if choice == 'admin':
-            admin_username = input('Enter admin username: ')
-            admin_password = input('Enter admin password: ')
+print('Welcome to the Casino Game!')
+current_time = time.ctime()
+print(f'Current time: {current_time}')
+while True:
+            choice = input('Enter your role (admin/player/quit): ')
+            if choice == 'admin':
+                admin_username = input('Enter admin username: ')
+                admin_password = input('Enter admin password: ')
             if admin_login(admin_username, admin_password):
                 admin_menu(admin_username)
             else:
                 print('Invalid admin credentials.')
-        elif choice == 'player':
-            player_username = input('Enter player username: ')
-            player_password = input('Enter player password: ')
+            if choice == 'player':
+                player_username = input('Enter player username: ')
+                player_password = input('Enter player password: ')
             if user_login(player_username, player_password):
                 player_menu(player_username)
             else:
                 print('Invalid player credentials.')
-        elif choice == 'quit':
-            print('Goodbye!')
+            if choice == 'quit':
+                print('Goodbye!')
             break
         else:
-            print('Invalid choice. Please select a valid role.')
+    print('Invalid choice. Please select a valid role.')
 
 if __name__ == '__main__':
-    main()
     main()  # Start the program execution by calling the main() function
 
-    # Get user info for 'user1'
-    user_info = get_user_info(users, 'user1')  # Replace 'user1' with the desired username
-    if user_info:
-        print(f"Username: {user_info['username']}")
-        print(f"Role: {user_info['role']}")
-        print(f"Coins: {user_info['coins']}")
-    else:
-        print("User not found.")
+# Get user info for 'user1'
+user_info = get_user_info(users, 'user1')  # Replace 'user1' with the desired username
+if user_info:
+    print(f"Username: {user_info['username']}")
+    print(f"Role: {user_info['role']}")
+    print(f"Coins: {user_info['coins']}")
+else:
+    print("User not found.")
