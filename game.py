@@ -163,23 +163,28 @@ def admin_menu(username):
 def manage_coins():
     """
     Manage player coins.
-
-    This function allows an admin user to manage the coins of a player.
+    
+    This function allows an admin user to manage the coins of a player. It prompts the admin
+    for a player's username, an action (add/cashout), and the amount of coins. Based on the
+    action, it either adds or cashes out the specified number of coins for the player.
     """
     username = input('Enter player username: ')
-    if username in users and users[username]['role'] == 'player':
-        action = input('Enter action (add/cashout): ')
-        coins = int(input('Enter coins: '))
-    if action == 'add':
-       users[username]['coins'] += coins
-          print(f'{coins} coins added to {username}.')
-    elif action == 'cashout':
-            # Placeholder logic for cashing out coins
-          print(f'{coins} coins cashed out from {username}.')
+    if username in users:  # Use the function to check if the username exists
+        if users[username]['role'] == 'player':
+            action = input('Enter action (add/cashout): ')
+            coins = int(input('Enter coins: '))
+            if action == 'add':
+                add_coins(users, username, coins)  # Call the add_coins function
+                print(f'{coins} coins added to {username}.')
+            elif action == 'cashout':
+                cash_out_coins(users, username, coins)  # Call the cash_out_coins function
+                print(f'{coins} coins cashed out from {username}.')
+            else:
+                print('Invalid action.')
+        else:
+            print(f'Player "{username}" is not a valid player.')
     else:
-          print('Invalid action.')
-    else:
-          print(f'Player "{username}" not found or not a valid player.')
+        print(f'Player "{username}" not found.')
 
 def user_login(username, password):
     """
