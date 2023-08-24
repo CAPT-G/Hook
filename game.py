@@ -128,6 +128,33 @@ class CasinoGame:
                 break
             else:
                 print("Invalid choice. Please select a valid option.")
+def username(user_dict, username):
+    """
+    Check if the provided username exists in the user dictionary.
+
+    Args:
+        user_dict (dict): A dictionary containing user information.
+        username (str): The username to check.
+
+    Returns:
+        bool: True if the username exists in the dictionary, False otherwise.
+    """
+    return username in user_dict
+def get_user_info(user_dict, username):
+    """
+    Get user information from the user dictionary.
+
+    Args:
+        user_dict (dict): A dictionary containing user information.
+        username (str): The username to retrieve information for.
+
+    Returns:
+        dict: User information dictionary if the username exists, None otherwise.
+    """
+    if username in user_dict:
+        return user_dict[username]
+    else:
+        return None
 def admin_login(username, password):
     """
     Authenticate an admin user.
@@ -145,6 +172,42 @@ def admin_login(username, password):
         return True
     else:
         return False
+def cash_out_coins(user_dict, username, amount):
+    """
+    Cash out coins from a player's account.
+
+    This function allows an admin user to cash out a specified amount of coins from a player's account.
+
+    Args:
+        user_dict (dict): A dictionary containing user information.
+        username (str): The username of the player.
+        amount (int): The number of coins to be cashed out.
+
+    Returns:
+        bool: True if the cash out was successful, False otherwise.
+    """
+    if username in user_dict and user_dict[username]['role'] == 'player' and user_dict[username]['coins'] >= amount:
+        user_dict[username]['coins'] -= amount
+        return True
+    return False
+def add_coins(user_dict, username, amount):
+    """
+    Add coins to a player's account.
+
+    This function allows an admin user to add a specified amount of coins to a player's account.
+
+    Args:
+        user_dict (dict): A dictionary containing user information.
+        username (str): The username of the player.
+        amount (int): The number of coins to be added.
+
+    Returns:
+        bool: True if the coins were added successfully, False otherwise.
+    """
+    if username in user_dict and user_dict[username]['role'] == 'player':
+        user_dict[username]['coins'] += amount
+        return True
+    return False
 
 def user_login(username, password):
     """
@@ -195,6 +258,17 @@ def main():
             break
         else:
             print('Invalid choice. Please select a valid role.')
+def adjust_playable_odds(self, new_odds):
+        """
+        Adjust the playable odds for the casino games.
+
+        This method allows an admin user to adjust the odds of winning a game.
+
+        Args:
+            new_odds (int): The new odds of winning a game, represented as a percentage.
+        """
+        self.playable_odds = new_odds
+        self._number_selector.odds = new_odds
 def admin_menu(username, game):
     """
     Display the admin menu and handle admin actions.
@@ -219,7 +293,7 @@ def admin_menu(username, game):
             manage_coins()
         elif choice == '2':
             new_odds = int(input("Enter new playable odds: "))
-            game.adjust_playable_odds(new_odds)
+            game.adjust_playable_odds(new_odds)  # Call the method to adjust playable odds
             print(f"Playable odds changed to {new_odds}%")
         elif choice == '3':
             print(f'Goodbye, {username}!')
@@ -235,17 +309,21 @@ def manage_coins():
     action, it either adds or cashes out the specified number of coins for the player.
     """
     username = input('Enter player username: ')
-if username in users and users[username]['role'] == 'player':
-    action = input('Enter action (add/cashout): ')
-    coins = int(input('Enter coins: '))
-    if action == 'add':
-        users[username]['coins'] += coins
-        print(f'{coins} coins added to {username}.')
-        add_coins(username, coins)
-    elif action == 'cashout':
-        cash_out_coins(username, coins)
+    
+    if username(user_dict, username):  # Use the function to check if the username exists
+        if users[username]['role'] == 'player':
+            action = input('Enter action (add/cashout): ')
+            coins = int(input('Enter coins: '))
+            if action == 'add':
+                users[username]['coins'] += coins
+                print(f'{coins} coins added to {username}.')
+                add_coins(username, coins)
+            elif action == 'cashout':
+                cash_out_coins(username, coins)
+            else:
+                print('Invalid action.')
     else:
-        print('Invalid action.')
+        print(f'Player "{username}" not found or not a valid player.')
 def add_coins(username, amount):
  """
     Add coins to a player's account.
@@ -301,3 +379,12 @@ def player_menu(username):
             print('Invalid choice. Please select a valid option.')
 if __name__ == '__main__':
     main()  # Start the program execution by calling the main() function
+
+    # Get user info for 'user1'
+    user_info = get_user_info(users, 'user1')  # Replace 'user1' with the desired username
+    if user_info:
+        print(f"Username: {user_info['username']}")
+        print(f"Role: {user_info['role']}")
+        print(f"Coins: {user_info['coins']}")
+    else:
+        print("User not found.")
