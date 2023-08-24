@@ -1,5 +1,3 @@
-Java 
-
 const readlineSync = require('readline-sync');
 
 class RandomNumberSelector {
