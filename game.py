@@ -6,7 +6,7 @@ It includes classes and functions for playing casino games, managing user coins,
 """
 import random
 import time
-
+from datetime import datetime, timedelta
 class RandomNumberSelector:
       """
         A class to generate random numbers based on given odds.
@@ -37,21 +37,6 @@ def generate_number(self):
             return False
 
 class CasinoGame:
-     """
-    A class representing an online casino game.
-
-    This class provides functionality for playing casino games, managing user coins,
-    and handling payouts.
-
-    Attributes:
-        user_coins (int): The number of coins the user currently has.
-        user_winnings (int): The total winnings accumulated by the user.
-        max_payout (int): The maximum amount of winnings a user can accumulate.
-        purchase_amount (int): The amount of coins required to play a game.
-        playable_odds (int): The odds of winning a game, represented as a percentage.
-        _number_selector (RandomNumberSelector): An instance of the RandomNumberSelector
-                                                 class used to generate random numbers for games.
-    """
 def __init__(self):
         """
         A class representing an online casino game.
@@ -89,18 +74,17 @@ def play_game(self):
         Plays a game based on the specified odds and updates user coins and winnings accordingly.
         """
         if self.user_coins >= self.purchase_amount:
-            if self._number_selector.generate_number():
-                self.user_winnings += self.purchase_amount * 5
-                self.user_coins -= self.purchase_amount
-                if self.user_winnings > self.max_payout:
-                    self.user_winnings -= self.max_payout
-                print(f"Congratulations! You won {self.purchase_amount * 5} coins.")
-            else:
-                self.user_coins -= self.purchase_amount
-                print("Better luck next time. You lost.")
+        if self._number_selector.generate_number():
+           self.user_winnings += self.purchase_amount * 5
+           self.user_coins -= self.purchase_amount
+        if self.user_winnings > self.max_payout:
+           self.user_winnings -= self.max_payout
+            print(f"Congratulations! You won {self.purchase_amount * 5} coins.")
+        else:
+            self.user_coins -= self.purchase_amount
+            print("Better luck next time. You lost.")
         else:
             print("You don't have enough coins to play.")
-
 def cash_out(self):
         """
         Cash out user winnings.
@@ -139,21 +123,17 @@ def main_menu(self):
                 break
             else:
                 print("Invalid choice. Please select a valid option.")
-
-# Placeholder functions and data
-users = {
-    'admin': {'password': 'adminpass', 'role': 'admin'},
-    'player': {'password': 'playerpass', 'role': 'player'}
-}
+users = {'admin': {'password': 'adminpass', 'role': 'admin'},
+    'player': {'password': 'playerpass', 'role': 'player'}}
 
 def admin_menu(username):
     """
     Display the admin menu and handle admin actions.
 
     Args:
-        username (str): The username of the admin user.
+       username (str): The username of the admin user.
     """
-    print(f'Welcome, {username} (Administrator)!')
+       print(f'Welcome, {username} (Administrator)!')
     while True:
         print('\nAdmin Menu:')
         print('1. Manage Coins for Players')
@@ -182,16 +162,16 @@ def manage_coins():
     if username in users and users[username]['role'] == 'player':
         action = input('Enter action (add/cashout): ')
         coins = int(input('Enter coins: '))
-        if action == 'add':
-            users[username]['coins'] += coins
-            print(f'{coins} coins added to {username}.')
-        elif action == 'cashout':
+    if action == 'add':
+       users[username]['coins'] += coins
+          print(f'{coins} coins added to {username}.')
+    elif action == 'cashout':
             # Placeholder logic for cashing out coins
-            print(f'{coins} coins cashed out from {username}.')
-        else:
-            print('Invalid action.')
+          print(f'{coins} coins cashed out from {username}.')
     else:
-        print(f'Player "{username}" not found or not a valid player.')
+          print('Invalid action.')
+    else:
+          print(f'Player "{username}" not found or not a valid player.')
 
 def user_login(username, password):
     """
