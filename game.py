@@ -23,15 +23,15 @@ users = {
 
 class RandomNumberSelector:
     def __init__(self, odds):
-    """
+     """
     A class to generate random numbers based on given odds.
 
     This class provides a mechanism to generate random numbers based on specified odds.
     
     Args:
         odds (int): The odds of selecting a number, represented as a percentage.
-    """
-        self.odds = odds
+     """
+    self.odds = odds
         
     def generate_number(self):
         """
