@@ -32,7 +32,6 @@ class RandomNumberSelector:
         odds (int): The odds of selecting a number, represented as a percentage.
      """
     self.odds = odds
-        
     def generate_number(self):
         """
         Generate a random number based on the specified odds.
@@ -44,7 +43,6 @@ class RandomNumberSelector:
             return True
         else:
             return False
-
 class CasinoGame:
     """
     A class representing an online casino game.
@@ -71,7 +69,6 @@ class CasinoGame:
         self.purchase_amount = 200
         self.playable_odds = 10
         self._number_selector = RandomNumberSelector(odds=self.playable_odds)
-    
     def play_game(self):
         """
         Play a casino game.
@@ -90,7 +87,6 @@ class CasinoGame:
                 print("Better luck next time. You lost.")
         else:
             print("You don't have enough coins to play.")
-
     def cash_out(self):
         """
         Cash out user winnings.
@@ -208,7 +204,6 @@ def add_coins(user_dict, username, amount):
         user_dict[username]['coins'] += amount
         return True
     return False
-
 def user_login(username, password):
     """
     Authenticate a player user.
@@ -226,7 +221,6 @@ def user_login(username, password):
         return True
     else:
         return False
-
 def main():
     """
     The main function to run the Casino Game simulation.
@@ -288,7 +282,6 @@ def admin_menu(username, game):
         print('2. Adjust Playable Odds')
         print('3. Log Out')
         choice = input('Select an option: ')
-        
         if choice == '1':
             manage_coins()
         elif choice == '2':
@@ -309,7 +302,6 @@ def manage_coins():
     action, it either adds or cashes out the specified number of coins for the player.
     """
     username = input('Enter player username: ')
-    
     if username(user_dict, username):  # Use the function to check if the username exists
         if users[username]['role'] == 'player':
             action = input('Enter action (add/cashout): ')
@@ -367,7 +359,6 @@ def player_menu(username):
         print('2. Cash Out')
         print('3. Log Out')
         choice = input('Select an option: ')
-        
         if choice == '1':
             game.play_game()
         elif choice == '2':
