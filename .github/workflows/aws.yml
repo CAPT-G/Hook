@@ -1,0 +1,292 @@
+# This Java 
+
+const readlineSync = require('readline-sync');
+
+class RandomNumberSelector {
+    constructor(odds) {
+        this.odds = odds;
+    }
+
+    generateNumber() {
+        return Math.random() * 100 <= this.odds;
+    }
+}
+
+class CasinoGame {
+    constructor() {
+        this.userCoins = 200;
+        this.userWinnings = 0;
+        this.maxPayout = 2000;
+        this.purchaseAmount = 200;
+        this.playableOdds = 10;
+        this.numberSelector = new RandomNumberSelector(this.playableOdds);
+    }
+
+    playGame() {
+        if (this.userCoins >= this.purchaseAmount) {
+            if (this.numberSelector.generateNumber()) {
+                this.userWinnings += this.purchaseAmount * 5;
+                this.userCoins -= this.purchaseAmount;
+                if (this.userWinnings > this.maxPayout) {
+                    this.userWinnings -= this.maxPayout;
+                }
+                console.log(`Congratulations! You won ${this.purchaseAmount * 5} coins.`);
+            } else {
+                this.userCoins -= this.purchaseAmount;
+                console.log("Better luck next time. You lost.");
+            }
+        } else {
+            console.log("You don't have enough coins to play.");
+        }
+    }
+
+    cashOut() {
+        if (this.userWinnings >= this.purchaseAmount * 5) {
+            const cashOutAmount = Math.min(this.userWinnings, this.userCoins * 5);
+            this.userWinnings -= cashOutAmount;
+            this.userCoins += cashOutAmount;
+            console.log(`You cashed out ${cashOutAmount} coins.`);
+        } else {
+            console.log("You don't have enough winnings to cash out.");
+        }
+    }
+
+    mainMenu() {
+        while (true) {
+            console.log("\nMain Menu:");
+            console.log("1. Play Game");
+            console.log("2. Cash Out");
+            console.log("3. Quit");
+            const choice = readlineSync.question("Select an option: ");
+
+            if (choice === "1") {
+                this.playGame();
+            } else if (choice === "2") {
+                this.cashOut();
+            } else if (choice === "3") {
+                console.log("Goodbye!");
+                break;
+            } else {
+                console.log("Invalid choice. Please select a valid option.");
+            }
+        }
+    }
+}
+
+const users = {
+    'admin': {'password': 'adminpass', 'role': 'admin'},
+    'player': {'password': 'playerpass', 'role': 'player'}
+};
+
+function adminMenu(username) {
+    console.log(`Welcome, ${username} (Administrator)!`);
+    const game = new CasinoGame();
+
+    while (true) {
+        console.log('\nAdmin Menu:');
+        console.log('1. Manage Coins for Players');
+        console.log('2. Adjust Playable Odds');
+        console.log('3. Log Out');
+        const choice = readlineSync.question('Select an option: ');
+
+        if (choice === '1') {
+            manageCoins();
+        } else if (choice === '2') {
+            const newOdds = parseInt(readlineSync.question("Enter new playable odds: "));
+            game.playableOdds = newOdds;  // Adjust playable odds
+            console.log(`Playable odds changed to ${newOdds}%`);
+        } else if (choice === '3') {
+            console.log(`Goodbye, ${username}!`);
+            break;
+        } else {
+            console.log('Invalid choice. Please select a valid option.');
+        }
+    }
+}
+
+function manageCoins() {
+    const username = readlineSync.question('Enter player username: ');
+    if (users.hasOwnProperty(username)) {
+        if (users[username]['role'] === 'player') {
+            const action = readlineSync.question('Enter action (add/cashout): ');
+            const coins = parseInt(readlineSync.question('Enter coins: '));
+            if (action === 'add') {
+                addCoins(username, coins);
+                console.log(`${coins} coins added to ${username}.`);
+            } else if (action === 'cashout') {
+                cashOutCoins(username, coins);
+                console.log(`${coins} coins cashed out from ${username}.`);
+            } else {
+                console.log('Invalid action.');
+            }
+        } else {
+            console.log(`Player "${username}" is not a valid player.`);
+        }
+    } else {
+        console.log(`Player "${username}" not found.`);
+    }
+}
+
+function userLogin(username, password) {
+    return users.hasOwnProperty(username) &&
+        users[username]['password'] === password &&
+        users[username]['role'] === 'player';
+}
+
+function adminLogin(username, password) {
+    return users.hasOwnProperty(username) &&
+        users[username]['password'] === password &&
+        users[username]['role'] === 'admin';
+}
+
+function playerMenu(username) {
+    const game = new CasinoGame();
+    console.log(`Welcome, ${username} (Player)!`);
+    while (true) {
+        console.log('\nPlayer Menu:');
+        console.log('1. Play Game');
+        console.log('2. Cash Out');
+        console.log('3. Log Out');
+        const choice = readlineSync.question('Select an option: ');
+        if (choice === '1') {
+            game.playGame();
+        } else if (choice === '2') {
+            game.cashOut();
+        } else if (choice === '3') {
+            console.log(`Goodbye, ${username}!`);
+            break;
+        } else {
+            console.log('Invalid choice. Please select a valid option.');
+        }
+    }
+}
+
+function main() {
+    console.log('Welcome to the Casino Game!');
+    const current_time = new Date();
+    console.log(`Current time: ${current_time.toString()}`);
+
+    while (true) {
+        const choice = readlineSync.question('Enter your role (admin/player/quit): ');
+        if (choice === 'admin') {
+            const adminUsername = readlineSync.question('Enter admin username: ');
+            const adminPassword = readlineSync.question('Enter admin password: ');
+
+            if (adminLogin(adminUsername, adminPassword)) {
+                adminMenu(adminUsername);
+            } else {
+                console.log('Invalid admin credentials.');
+            }
+        } else if (choice === 'player') {
+            const playerUsername = readlineSync.question('Enter player username: ');
+            const playerPassword = readlineSync.question('Enter player password: ');
+
+            if (userLogin(playerUsername, playerPassword)) {
+                playerMenu(playerUsername);
+            } else {
+                console.log('Invalid player credentials.');
+            }
+        } else if (choice === 'quit') {
+            console.log('Goodbye!');
+            break;
+        } else {
+            console.log('Invalid choice. Please select a valid role.');
+        }
+    }
+}
+
+main();
+ will build and push a new container image to Amazon ECR,
+# and then will deploy a new task definition to Amazon ECS, when there is a push to the "main" branch.
+#
+# To use this workflow, you will need to complete the following set-up steps:
+#
+# 1. Create an ECR repository to store your images.
+#    For example: `aws ecr create-repository --repository-name my-ecr-repo --region us-east-2`.
+#    Replace the value of the `ECR_REPOSITORY` environment variable in the workflow below with your repository's name.
+#    Replace the value of the `AWS_REGION` environment variable in the workflow below with your repository's region.
+#
+# 2. Create an ECS task definition, an ECS cluster, and an ECS service.
+#    For example, follow the Getting Started guide on the ECS console:
+#      https://us-east-2.console.aws.amazon.com/ecs/home?region=us-east-2#/firstRun
+#    Replace the value of the `ECS_SERVICE` environment variable in the workflow below with the name you set for the Amazon ECS service.
+#    Replace the value of the `ECS_CLUSTER` environment variable in the workflow below with the name you set for the cluster.
+#
+# 3. Store your ECS task definition as a JSON file in your repository.
+#    The format should follow the output of `aws ecs register-task-definition --generate-cli-skeleton`.
+#    Replace the value of the `ECS_TASK_DEFINITION` environment variable in the workflow below with the path to the JSON file.
+#    Replace the value of the `CONTAINER_NAME` environment variable in the workflow below with the name of the container
+#    in the `containerDefinitions` section of the task definition.
+#
+# 4. Store an IAM user access key in GitHub Actions secrets named `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
+#    See the documentation for each action used below for the recommended IAM policies for this IAM user,
+#    and best practices on handling the access key credentials.
+
+name: Deploy to Amazon ECS
+
+on:
+  push:
+    branches: [ "main" ]
+
+env:
+  AWS_REGION: MY_AWS_REGION                   # set this to your preferred AWS region, e.g. us-west-1
+  ECR_REPOSITORY: MY_ECR_REPOSITORY           # set this to your Amazon ECR repository name
+  ECS_SERVICE: MY_ECS_SERVICE                 # set this to your Amazon ECS service name
+  ECS_CLUSTER: MY_ECS_CLUSTER                 # set this to your Amazon ECS cluster name
+  ECS_TASK_DEFINITION: MY_ECS_TASK_DEFINITION # set this to the path to your Amazon ECS task definition
+                                               # file, e.g. .aws/task-definition.json
+  CONTAINER_NAME: MY_CONTAINER_NAME           # set this to the name of the container in the
+                                               # containerDefinitions section of your task definition
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Build, tag, and push image to Amazon ECR
+      id: build-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        # Build a docker container and
+        # push it to ECR so that it can
+        # be deployed to ECS.
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+    - name: Fill in the new image ID in the Amazon ECS task definition
+      id: task-def
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: ${{ env.ECS_TASK_DEFINITION }}
+        container-name: ${{ env.CONTAINER_NAME }}
+        image: ${{ steps.build-image.outputs.image }}
+
+    - name: Deploy Amazon ECS task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: ${{ steps.task-def.outputs.task-definition }}
+        service: ${{ env.ECS_SERVICE }}
+        cluster: ${{ env.ECS_CLUSTER }}
+        wait-for-service-stability: true
