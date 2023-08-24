@@ -129,22 +129,30 @@ users = {'admin': {'password': 'adminpass', 'role': 'admin'},
 def admin_menu(username):
     """
     Display the admin menu and handle admin actions.
-
+    
+    This function presents a menu with options for an admin user, such as managing player coins,
+    adjust playable odds, and logging out. It handles the user's input and directs them to the
+    appropriate actions.
+    
     Args:
-       username (str): The username of the admin user.
+        username (str): The username of the admin user.
     """
-       print(f'Welcome, {username} (Administrator)!')
+    print(f'Welcome, {username} (Administrator)!')
+    game = CasinoGame()  # Initialize the game instance
+
     while True:
         print('\nAdmin Menu:')
         print('1. Manage Coins for Players')
         print('2. Adjust Playable Odds')
         print('3. Log Out')
         choice = input('Select an option: ')
+
         if choice == '1':
-            manage_coins()
+            player_username = input('Enter player username: ')
+            manage_coins(player_username)
         elif choice == '2':
             new_odds = int(input("Enter new playable odds: "))
-            # Placeholder logic for adjusting playable odds
+            game.adjust_playable_odds(new_odds)  # Call the method to adjust playable odds
             print(f"Playable odds changed to {new_odds}%")
         elif choice == '3':
             print(f'Goodbye, {username}!')
