@@ -8,6 +8,14 @@ import random
 import time
 
 class RandomNumberSelector:
+      """
+        A class to generate random numbers based on given odds.
+
+        This class provides a mechanism to generate random numbers based on specified odds.
+
+        Args:
+            odds (int): The odds of selecting a number, represented as a percentage.
+        """
     def __init__(self, odds):
         """
         A class to generate random numbers based on given odds.
@@ -30,6 +38,21 @@ class RandomNumberSelector:
             return False
 
 class CasinoGame:
+     """
+    A class representing an online casino game.
+
+    This class provides functionality for playing casino games, managing user coins,
+    and handling payouts.
+
+    Attributes:
+        user_coins (int): The number of coins the user currently has.
+        user_winnings (int): The total winnings accumulated by the user.
+        max_payout (int): The maximum amount of winnings a user can accumulate.
+        purchase_amount (int): The amount of coins required to play a game.
+        playable_odds (int): The odds of winning a game, represented as a percentage.
+        _number_selector (RandomNumberSelector): An instance of the RandomNumberSelector
+                                                 class used to generate random numbers for games.
+    """
     def __init__(self):
         """
         A class representing an online casino game.
@@ -49,7 +72,17 @@ class CasinoGame:
         self.purchase_amount = 200
         self.playable_odds = 10
         self._number_selector = RandomNumberSelector(odds=self.playable_odds)
-
+     def generate_number(self):
+        """
+        Generate a random number based on the specified odds.
+        
+        Returns:
+            bool: True if the number is selected, False otherwise.
+        """
+        if random.randint(1, 100) <= self.odds:
+            return True
+        else:
+            return False
     def play_game(self):
         """
         Play a casino game.
@@ -233,6 +266,12 @@ def get_user_info(user_dict, username):
     else:
         return None
 def main():
+     """
+    The main function to run the Casino Game simulation.
+
+    This function welcomes the user to the Casino Game, provides a menu to select a role
+    (admin/player/quit), and directs the user to the appropriate menus based on their choice.
+    """
     print('Welcome to the Casino Game!')
     current_time = time.ctime()
     print(f'Current time: {current_time}')
