@@ -1,36 +1,198 @@
-name: game app
+Java 
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+const readlineSync = require('readline-sync');
 
-permissions:
-  contents: read
+class RandomNumberSelector {
+    constructor(odds) {
+        this.odds = odds;
+    }
 
-jobs:
-  build:
+    generateNumber() {
+        return Math.random() * 100 <= this.odds;
+    }
+}
 
-    runs-on: ubuntu-latest
+class CasinoGame {
+    constructor() {
+        this.userCoins = 200;
+        this.userWinnings = 0;
+        this.maxPayout = 2000;
+        this.purchaseAmount = 200;
+        this.playableOdds = 10;
+        this.numberSelector = new RandomNumberSelector(this.playableOdds);
+    }
 
-    steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v3
-      with:
-        python-version: "3.10"
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install flake8 pytest
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Lint with flake8
-      run: |
-        # stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Test with pytest
-      run: |
-        pytest
+    playGame() {
+        if (this.userCoins >= this.purchaseAmount) {
+            if (this.numberSelector.generateNumber()) {
+                this.userWinnings += this.purchaseAmount * 5;
+                this.userCoins -= this.purchaseAmount;
+                if (this.userWinnings > this.maxPayout) {
+                    this.userWinnings -= this.maxPayout;
+                }
+                console.log(`Congratulations! You won ${this.purchaseAmount * 5} coins.`);
+            } else {
+                this.userCoins -= this.purchaseAmount;
+                console.log("Better luck next time. You lost.");
+            }
+        } else {
+            console.log("You don't have enough coins to play.");
+        }
+    }
+
+    cashOut() {
+        if (this.userWinnings >= this.purchaseAmount * 5) {
+            const cashOutAmount = Math.min(this.userWinnings, this.userCoins * 5);
+            this.userWinnings -= cashOutAmount;
+            this.userCoins += cashOutAmount;
+            console.log(`You cashed out ${cashOutAmount} coins.`);
+        } else {
+            console.log("You don't have enough winnings to cash out.");
+        }
+    }
+
+    mainMenu() {
+        while (true) {
+            console.log("\nMain Menu:");
+            console.log("1. Play Game");
+            console.log("2. Cash Out");
+            console.log("3. Quit");
+            const choice = readlineSync.question("Select an option: ");
+
+            if (choice === "1") {
+                this.playGame();
+            } else if (choice === "2") {
+                this.cashOut();
+            } else if (choice === "3") {
+                console.log("Goodbye!");
+                break;
+            } else {
+                console.log("Invalid choice. Please select a valid option.");
+            }
+        }
+    }
+}
+
+const users = {
+    'admin': {'password': 'adminpass', 'role': 'admin'},
+    'player': {'password': 'playerpass', 'role': 'player'}
+};
+
+function adminMenu(username) {
+    console.log(`Welcome, ${username} (Administrator)!`);
+    const game = new CasinoGame();
+
+    while (true) {
+        console.log('\nAdmin Menu:');
+        console.log('1. Manage Coins for Players');
+        console.log('2. Adjust Playable Odds');
+        console.log('3. Log Out');
+        const choice = readlineSync.question('Select an option: ');
+
+        if (choice === '1') {
+            manageCoins();
+        } else if (choice === '2') {
+            const newOdds = parseInt(readlineSync.question("Enter new playable odds: "));
+            game.playableOdds = newOdds;  // Adjust playable odds
+            console.log(`Playable odds changed to ${newOdds}%`);
+        } else if (choice === '3') {
+            console.log(`Goodbye, ${username}!`);
+            break;
+        } else {
+            console.log('Invalid choice. Please select a valid option.');
+        }
+    }
+}
+
+function manageCoins() {
+    const username = readlineSync.question('Enter player username: ');
+    if (users.hasOwnProperty(username)) {
+        if (users[username]['role'] === 'player') {
+            const action = readlineSync.question('Enter action (add/cashout): ');
+            const coins = parseInt(readlineSync.question('Enter coins: '));
+            if (action === 'add') {
+                addCoins(username, coins);
+                console.log(`${coins} coins added to ${username}.`);
+            } else if (action === 'cashout') {
+                cashOutCoins(username, coins);
+                console.log(`${coins} coins cashed out from ${username}.`);
+            } else {
+                console.log('Invalid action.');
+            }
+        } else {
+            console.log(`Player "${username}" is not a valid player.`);
+        }
+    } else {
+        console.log(`Player "${username}" not found.`);
+    }
+}
+
+function userLogin(username, password) {
+    return users.hasOwnProperty(username) &&
+        users[username]['password'] === password &&
+        users[username]['role'] === 'player';
+}
+
+function adminLogin(username, password) {
+    return users.hasOwnProperty(username) &&
+        users[username]['password'] === password &&
+        users[username]['role'] === 'admin';
+}
+
+function playerMenu(username) {
+    const game = new CasinoGame();
+    console.log(`Welcome, ${username} (Player)!`);
+    while (true) {
+        console.log('\nPlayer Menu:');
+        console.log('1. Play Game');
+        console.log('2. Cash Out');
+        console.log('3. Log Out');
+        const choice = readlineSync.question('Select an option: ');
+        if (choice === '1') {
+            game.playGame();
+        } else if (choice === '2') {
+            game.cashOut();
+        } else if (choice === '3') {
+            console.log(`Goodbye, ${username}!`);
+            break;
+        } else {
+            console.log('Invalid choice. Please select a valid option.');
+        }
+    }
+}
+
+function main() {
+    console.log('Welcome to the Casino Game!');
+    const current_time = new Date();
+    console.log(`Current time: ${current_time.toString()}`);
+
+    while (true) {
+        const choice = readlineSync.question('Enter your role (admin/player/quit): ');
+        if (choice === 'admin') {
+            const adminUsername = readlineSync.question('Enter admin username: ');
+            const adminPassword = readlineSync.question('Enter admin password: ');
+
+            if (adminLogin(adminUsername, adminPassword)) {
+                adminMenu(adminUsername);
+            } else {
+                console.log('Invalid admin credentials.');
+            }
+        } else if (choice === 'player') {
+            const playerUsername = readlineSync.question('Enter player username: ');
+            const playerPassword = readlineSync.question('Enter player password: ');
+
+            if (userLogin(playerUsername, playerPassword)) {
+                playerMenu(playerUsername);
+            } else {
+                console.log('Invalid player credentials.');
+            }
+        } else if (choice === 'quit') {
+            console.log('Goodbye!');
+            break;
+        } else {
+            console.log('Invalid choice. Please select a valid role.');
+        }
+    }
+}
+
+main();
