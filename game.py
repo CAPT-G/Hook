@@ -1,41 +1,24 @@
-"""
-Casino Game
+Python
 
-This module simulates an online casino game with user authentication and role-based access.
-It includes classes and functions for playing casino games, managing user coins, and handling payouts.
-"""
 import random
 import time
 
-users = {
-    'admin': {
-        'password': 'admin123',
-        'role': 'admin',
-        'coins': 0
-    },
-    'user1': {
-        'password': 'password1',
-        'role': 'player',
-        'coins': 200,
-        'last_daily_check_in': None
-    }
-}
-
 class RandomNumberSelector:
     def __init__(self, odds):
-     """
-    A class to generate random numbers based on given odds.
+        """
+        A class to generate random numbers based on given odds.
 
-    This class provides a mechanism to generate random numbers based on specified odds.
-    
-    Args:
-        odds (int): The odds of selecting a number, represented as a percentage.
-     """
-    self.odds = odds
+        This class provides a mechanism to generate random numbers based on specified odds.
+
+        Args:
+            odds (int): The odds of selecting a number, represented as a percentage.
+        """
+        self.odds = odds
+
     def generate_number(self):
         """
         Generate a random number based on the specified odds.
-        
+
         Returns:
             bool: True if the number is selected, False otherwise.
         """
@@ -49,7 +32,6 @@ class CasinoGame:
 
     This class provides functionality for playing casino games, managing user coins,
     and handling payouts.
-    
     Attributes:
         user_coins (int): The number of coins the user currently has.
         user_winnings (int): The total winnings accumulated by the user.
@@ -59,7 +41,7 @@ class CasinoGame:
         _number_selector (RandomNumberSelector): An instance of the RandomNumberSelector
                                                  class used to generate random numbers for games.
     """
-    def __init__(self):
+    def __init__(self): # Initialize attributes here
         """
         Initialize the CasinoGame instance with default values.
         """
@@ -69,7 +51,7 @@ class CasinoGame:
         self.purchase_amount = 200
         self.playable_odds = 10
         self._number_selector = RandomNumberSelector(odds=self.playable_odds)
-    def play_game(self):
+    def play_game(self): # Play game logic
         """
         Play a casino game.
         
@@ -87,7 +69,7 @@ class CasinoGame:
                 print("Better luck next time. You lost.")
         else:
             print("You don't have enough coins to play.")
-    def cash_out(self):
+    def cash_out(self): # Cash out logic
         """
         Cash out user winnings.
         
@@ -108,13 +90,13 @@ class CasinoGame:
     cashing out winnings, and quitting. It handles the user's input and directs them
     to the appropriate actions.
     """
-        while True:
+    while True:
             print("\nMain Menu:")
             print("1. Play Game")
             print("2. Cash Out")
             print("3. Quit")
             choice = input("Select an option: ")
-            
+
             if choice == "1":
                 self.play_game()
             elif choice == "2":
@@ -326,7 +308,7 @@ def add_coins(username, amount):
         username (str): The username of the player.
         amount (int): The number of coins to be added.
  """
-    if username in users and users[username]['role'] == 'player':
+if username in users and users[username]['role'] == 'player':
         users[username]['coins'] += amount
 def cash_out_coins(username, amount):
  """
@@ -338,7 +320,7 @@ def cash_out_coins(username, amount):
         username (str): The username of the player.
         amount (int): The number of coins to be cashed out.
  """
-    if username in users and users[username]['role'] == 'player' and users[username]['coins'] >= amount:
+if username in users and users[username]['role'] == 'player' and users[username]['coins'] >= amount:
         users[username]['coins'] -= amount
 def player_menu(username):
     """
