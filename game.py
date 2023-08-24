@@ -4,8 +4,6 @@ Casino Game
 This module simulates an online casino game with user authentication and role-based access.
 It includes classes and functions for playing casino games, managing user coins, and handling payouts.
 """
-GAME STRUCTURE COMPLETE
-
 import random
 import time
 
