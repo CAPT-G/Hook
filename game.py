@@ -8,14 +8,15 @@ import random
 import time
 from datetime import datetime, timedelta
 class RandomNumberSelector:
-      """
-        A class to generate random numbers based on given odds.
-
-        This class provides a mechanism to generate random numbers based on specified odds.
+    def __init__(self, length):
+        """
+        A class to generate a sequence of random numbers.
 
         Args:
-            odds (int): The odds of selecting a number, represented as a percentage.
+            length (int): The length of the sequence.
         """
+        self.length = length
+
 def __init__(self, odds):
         """
         A class to generate random numbers based on given odds.
