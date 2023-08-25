@@ -346,4 +346,3 @@ if __name__ == '__main__':
         print(f"Coins: {user_info['coins']}")
     else:
         print("User not found.")
-
