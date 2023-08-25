@@ -241,7 +241,20 @@ def register_user(users):
     role = input("Enter role (admin/player): ")
     users[new_username] = {'password': new_password, 'role': role, 'coins': 200, 'last_check_in': -1}
     print(f"User {new_username} registered successfully.")
+def check_in(username, users):
+    """
+    Perform daily check-in for a player.
 
+    Args:
+        username (str): The username of the player.
+        users (dict): A dictionary containing user information.
+    """
+    if users[username]['last_check_in'] == time.localtime().tm_yday:
+        print("You've already checked in today.")
+    else:
+        users[username]['last_check_in'] = time.localtime().tm_yday
+        users[username]['coins'] += 50
+        print("You've checked in and received 50 coins.")
 def main():
     print('Welcome to the Casino Game!')
     current_time = time.ctime()
