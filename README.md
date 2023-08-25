@@ -1,7 +1,3 @@
-Certainly! Here's a sample README file for the Casino Game project:
-
----
-
 # Casino Game
 
 Welcome to the Casino Game! This Python module simulates an online casino game with user authentication and role-based access. It includes classes and functions for playing casino games, managing user coins, and handling payouts.
