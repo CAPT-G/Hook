@@ -46,7 +46,7 @@ def generate_number(self):
             return False
 
 class CasinoGame:
-def __init__(self):
+    def __init__(self):
         """
         A class representing an online casino game.
 
