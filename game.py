@@ -9,7 +9,7 @@ import time
 from datetime import datetime, timedelta
 
 class RandomNumberSelector:
-    def __init__(self, length):
+def __init__(self, length):
         """
         A class to generate a sequence of random numbers.
 
@@ -66,8 +66,6 @@ class CasinoGame:
         self.purchase_amount = 200
         self.playable_odds = 10
         self._number_selector = RandomNumberSelector(odds=self.playable_odds)
-
-
 def generate_number(self):
         """
         Generate a random number based on the specified odds.
@@ -111,7 +109,7 @@ def play_game(self):
             self.user_winnings += self.purchase_amount * 5
             self.user_coins -= self.purchase_amount
             if self.user_winnings > self.max_payout:
-                self.user_winnings -= self.max_payout
+               self.user_winnings -= self.max_payout
             print(f"Congratulations! You won {self.purchase_amount * 5} coins.")
         else:
             self.user_coins -= self.purchase_amount
