@@ -115,6 +115,24 @@ def play_game(self):
             print("Better luck next time. You lost.")
     else:
         print("You don't have enough coins to play.")
+def add_coins(user_dict, username, coins):
+    """
+    Add coins to a player's account.
+
+    Args:
+        user_dict (dict): A dictionary containing user information.
+        username (str): The username of the player.
+        coins (int): The amount of coins to add.
+
+    Returns:
+        bool: True if the coins were added successfully, False otherwise.
+    """
+    if username in user_dict and user_dict[username]['role'] == 'player':
+        user_dict[username]['coins'] += coins
+        return True
+    else:
+        print(f"Invalid username or not a player: {username}")
+    return False
 def cash_out(self):
         """
         Cash out user winnings.
