@@ -306,43 +306,44 @@ def get_user_info(user_dict, username):
     else:
         return None
 def main():
-     """
+    """
     The main function to run the Casino Game simulation.
 
     This function welcomes the user to the Casino Game, provides a menu to select a role
     (admin/player/quit), and directs the user to the appropriate menus based on their choice.
     """
-print('Welcome to the Casino Game!')
-current_time = time.ctime()
-print(f'Current time: {current_time}')
-while True:
-            choice = input('Enter your role (admin/player/quit): ')
-            if choice == 'admin':
-                admin_username = input('Enter admin username: ')
-                admin_password = input('Enter admin password: ')
+    print('Welcome to the Casino Game!')
+    current_time = time.ctime()
+    print(f'Current time: {current_time}')
+    while True:
+        choice = input('Enter your role (admin/player/quit): ')
+        if choice == 'admin':
+            admin_username = input('Enter admin username: ')
+            admin_password = input('Enter admin password: ')
             if admin_login(admin_username, admin_password):
                 admin_menu(admin_username)
             else:
                 print('Invalid admin credentials.')
-            if choice == 'player':
-                player_username = input('Enter player username: ')
-                player_password = input('Enter player password: ')
+        elif choice == 'player':
+            player_username = input('Enter player username: ')
+            player_password = input('Enter player password: ')
             if user_login(player_username, player_password):
                 player_menu(player_username)
             else:
                 print('Invalid player credentials.')
-            if choice == 'quit':
-                print('Goodbye!')
+        elif choice == 'quit':
+            print('Goodbye!')
             break
-            else:
-                print('Invalid choice. Please select a valid role.')
+        else:
+            print('Invalid choice. Please select a valid role.')
+
 if __name__ == '__main__':
     main()  # Start the program execution by calling the main() function
-# Get user info for 'user1'
-user_info = get_user_info(users, 'user1')  # Replace 'user1' with the desired username
-if user_info:
-    print(f"Username: {user_info['username']}")
-    print(f"Role: {user_info['role']}")
-    print(f"Coins: {user_info['coins']}")
-else:
-    print("User not found.")
+    user_info = get_user_info(users, 'user1')
+    if user_info:
+        print(f"Username: {user_info['username']}")
+        print(f"Role: {user_info['role']}")
+        print(f"Coins: {user_info['coins']}")
+    else:
+        print("User not found.")
+
