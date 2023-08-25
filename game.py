@@ -7,6 +7,7 @@ It includes classes and functions for playing casino games, managing user coins,
 import random
 import time
 from datetime import datetime, timedelta
+
 class RandomNumberSelector:
     def __init__(self, length):
         """
@@ -65,6 +66,8 @@ class CasinoGame:
         self.purchase_amount = 200
         self.playable_odds = 10
         self._number_selector = RandomNumberSelector(odds=self.playable_odds)
+
+
 def generate_number(self):
         """
         Generate a random number based on the specified odds.
@@ -249,7 +252,6 @@ def user_login(username, password):
         return True
     else:
         return False
-
 def admin_login(username, password):
     """
     Authenticate an admin user.
@@ -290,6 +292,23 @@ def player_menu(username):
             break
         else:
             print('Invalid choice. Please select a valid option.')
+def register_user(users):
+    """
+    New User registration.
+    """
+    new_username = input("Enter a new username: ")
+    
+    if new_username in users:
+        print("Username already taken. Please choose another username.")
+        return
+    
+    new_password = input("Enter a password: ")
+    users[new_username] = {
+        'password': new_password,
+        'role': 'player',
+        'coins': 200  # Starting coins
+    }
+    print("Registration successful!")
 def get_user_info(user_dict, username):
     """
     Get user information from the user dictionary.
@@ -315,34 +334,34 @@ def main():
     print('Welcome to the Casino Game!')
     current_time = time.ctime()
     print(f'Current time: {current_time}')
-    while True:
-        choice = input('Enter your role (admin/player/quit): ')
-        if choice == 'admin':
-            admin_username = input('Enter admin username: ')
-            admin_password = input('Enter admin password: ')
-            if admin_login(admin_username, admin_password):
-                admin_menu(admin_username)
-            else:
-                print('Invalid admin credentials.')
-        elif choice == 'player':
+   while True:
+        choice = input('Enter your choice (login/register/quit): ')
+
+        if choice == 'login':
             player_username = input('Enter player username: ')
             player_password = input('Enter player password: ')
-            if user_login(player_username, player_password):
-                player_menu(player_username)
+            if user_login(player_username, player_password, users):
+                player_menu(player_username, users)
             else:
                 print('Invalid player credentials.')
+
+        elif choice == 'register':
+            register_user(users)
+
+        elif choice == 'admin':
+            admin_username = input('Enter admin username: ')
+            admin_password = input('Enter admin password: ')
+            if admin_login(admin_username, admin_password, users):
+                admin_menu(admin_username, users)
+            else:
+                print('Invalid admin credentials.')
+
         elif choice == 'quit':
             print('Goodbye!')
             break
+
         else:
-            print('Invalid choice. Please select a valid role.')
+            print('Invalid choice. Please select a valid
 
 if __name__ == '__main__':
     main()  # Start the program execution by calling the main() function
-    user_info = get_user_info(users, 'user1')
-    if user_info:
-        print(f"Username: {user_info['username']}")
-        print(f"Role: {user_info['role']}")
-        print(f"Coins: {user_info['coins']}")
-    else:
-        print("User not found.")
