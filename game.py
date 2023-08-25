@@ -241,21 +241,28 @@ def register_user(users):
     role = input("Enter role (admin/player): ")
     users[new_username] = {'password': new_password, 'role': role, 'coins': 200, 'last_check_in': -1}
     print(f"User {new_username} registered successfully.")
-def check_in(username, users):
-    """
-    Perform daily check-in for a player.
-
-    Args:
-        username (str): The username of the player.
-        users (dict): A dictionary containing user information.
-    """
-    if users[username]['last_check_in'] == time.localtime().tm_yday:
-        print("You've already checked in today.")
-    else:
-        users[username]['last_check_in'] = time.localtime().tm_yday
-        users[username]['coins'] += 50
-        print("You've checked in and received 50 coins.")
 def main():
+    """
+    Start the Casino Game simulation.
+
+    This function initializes the Casino Game simulation by welcoming the user,
+    displaying the current time, and setting up user data including admin and player accounts.
+
+    User Data:
+        - Admin user:
+            Username: admin
+            Password: adminpass
+            Role: admin
+            Coins: 9999999
+            Last check-in: -1 (not checked in)
+
+        - Player user:
+            Username: player1
+            Password: playerpass
+            Role: player
+            Coins: 200
+            Last check-in: -1 (not checked in)
+    """
     print('Welcome to the Casino Game!')
     current_time = time.ctime()
     print(f'Current time: {current_time}')
@@ -264,7 +271,6 @@ def main():
         'admin': {'password': 'adminpass', 'role': 'admin', 'coins': 9999999, 'last_check_in': -1},
         'player1': {'password': 'playerpass', 'role': 'player', 'coins': 200, 'last_check_in': -1}
     }
-
     while True:
         choice = input('Enter your choice (login/register/quit): ')
 
