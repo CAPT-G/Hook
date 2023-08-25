@@ -92,7 +92,6 @@ class CasinoGame:
         """
         self.playable_odds = new_odds
         self._number_selector.odds = new_odds
-
 def user_login(username, password, users):
     """
     Authenticate a user.
