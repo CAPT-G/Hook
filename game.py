@@ -1,7 +1,21 @@
+"""
+Casino Game
+
+This module simulates an online casino game with user authentication and role-based access.
+It includes classes and functions for playing casino games, managing user coins, and handling payouts.
+"""
 import random
 import time
 
 class RandomNumberSelector:
+     """
+    A class to generate random numbers based on given odds.
+
+    This class provides a mechanism to generate random numbers based on specified odds.
+
+    Args:
+        odds (int): The odds of selecting a number, represented as a percentage.
+    """    
     def __init__(self, odds):
         """
         A class to generate random numbers based on given odds.
@@ -22,7 +36,7 @@ class RandomNumberSelector:
 
 class CasinoGame:
     def __init__(self):
-        """
+         """
         A class representing an online casino game.
 
         Attributes:
@@ -31,8 +45,8 @@ class CasinoGame:
             max_payout (int): The maximum amount of winnings a user can accumulate.
             purchase_amount (int): The amount of coins required to play a game.
             playable_odds (int): The odds of winning a game, represented as a percentage.
-            _number_selector (RandomNumberSelector): An instance of the RandomNumberSelector
-                                                     class used to generate random numbers for games.
+            _number_selector (RandomNumberSelector): An instance of the RandomNumberSelector class
+                                                     used to generate random numbers for games.
         """
         self.user_coins = 200
         self.user_winnings = 0
@@ -172,7 +186,8 @@ def user_login(username, password):
     Returns:
         bool: True if the provided credentials are valid for a player user, False otherwise.
     """
-    return users.get(username, {}).get('password') == password and users.get(username, {}).get('role') == 'player'
+    return (users.get(username, {}).get('password') == password and
+            users.get(username, {}).get('role') == 'player')
 
 def admin_login(username, password):
     """
