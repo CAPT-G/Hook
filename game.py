@@ -76,6 +76,27 @@ def generate_number(self):
             return True
         else:
             return False
+def cash_out_coins(user_dict, username, coins):
+    """
+    Cash out player's winnings.
+
+    Args:
+        user_dict (dict): A dictionary containing user information.
+        username (str): The username of the player.
+        coins (int): The amount of coins to cash out.
+
+    Returns:
+        bool: True if the cash-out was successful, False otherwise.
+    """
+    if username in user_dict and user_dict[username]['role'] == 'player':
+        if user_dict[username]['coins'] >= coins:
+            user_dict[username]['coins'] -= coins
+            return True
+        else:
+            print(f"{username} doesn't have enough coins to cash out.")
+    else:
+        print(f"Invalid username or not a player: {username}")
+    return False
 def play_game(self):
     """
     Play a casino game.
