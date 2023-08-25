@@ -334,12 +334,10 @@ while True:
             if choice == 'quit':
                 print('Goodbye!')
             break
-        else:
-    print('Invalid choice. Please select a valid role.')
-
+            else:
+                print('Invalid choice. Please select a valid role.')
 if __name__ == '__main__':
     main()  # Start the program execution by calling the main() function
-
 # Get user info for 'user1'
 user_info = get_user_info(users, 'user1')  # Replace 'user1' with the desired username
 if user_info:
