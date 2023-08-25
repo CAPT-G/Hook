@@ -16,7 +16,15 @@ class RandomNumberSelector:
             length (int): The length of the sequence.
         """
         self.length = length
+def generate_sequence(self):
+        """
+        Generate a sequence of random numbers.
 
+        Returns:
+            list: A list of random numbers in the specified range.
+        """
+        sequence = [random.randint(0, 9) for _ in range(self.length)]
+        return sequence
 def __init__(self, odds):
         """
         A class to generate random numbers based on given odds.
