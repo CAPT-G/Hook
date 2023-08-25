@@ -1,9 +1,3 @@
-"""
-Casino Game
-
-This module simulates an online casino game with user authentication and role-based access.
-It includes classes and functions for playing casino games, managing user coins, and handling payouts.
-"""
 import random
 import time
 
@@ -24,10 +18,7 @@ class RandomNumberSelector:
         Returns:
             bool: True if the number is selected, False otherwise.
         """
-        if random.randint(1, 100) <= self.odds:
-            return True
-        else:
-            return False
+        return random.randint(1, 100) <= self.odds
 
 class CasinoGame:
     def __init__(self):
@@ -47,7 +38,7 @@ class CasinoGame:
         self.user_winnings = 0
         self.max_payout = 2000
         self.purchase_amount = 200
-        self.playable_odds = 5
+        self.playable_odds = 10
         self._number_selector = RandomNumberSelector(odds=self.playable_odds)
 
     def play_game(self):
@@ -83,90 +74,47 @@ class CasinoGame:
         else:
             print("You don't have enough winnings to cash out.")
 
-    def adjust_playable_odds(self, new_odds):
+    def main_menu(self):
         """
-        Adjust the playable odds of the game.
+        Display the main menu and handle user actions.
 
-        Args:
-            new_odds (int): The new playable odds, represented as a percentage.
+        This method presents a menu with options for a user, such as playing a game,
+        cashing out winnings, and quitting. It handles the user's input and directs them
+        to the appropriate actions.
         """
-        self.playable_odds = new_odds
-        self._number_selector.odds = new_odds
-def user_login(username, password, users):
-    """
-    Authenticate a user.
+        while True:
+            print("\nMain Menu:")
+            print("1. Play Game")
+            print("2. Cash Out")
+            print("3. Quit")
+            choice = input("Select an option: ")
 
-    Args:
-        username (str): The username of the user.
-        password (str): The password of the user.
-        users (dict): A dictionary containing user information.
+            if choice == "1":
+                self.play_game()
+            elif choice == "2":
+                self.cash_out()
+            elif choice == "3":
+                print("Goodbye!")
+                break
+            else:
+                print("Invalid choice. Please select a valid option.")
 
-    Returns:
-        bool: True if the provided credentials are valid for a user, False otherwise.
-    """
-    if username in users and users[username]['password'] == password:
-        return True
-    else:
-        return False
+users = {'admin': {'password': 'adminpass', 'role': 'admin'},
+         'player': {'password': 'playerpass', 'role': 'player'}}
 
-def player_menu(username, users):
-    """
-    Display the player menu and handle player actions.
-
-    Args:
-        username (str): The username of the player user.
-        users (dict): A dictionary containing user information.
-    """
-    game = CasinoGame()
-    print(f'Welcome, {username} (Player)!')
-
-    while True:
-        print('\nPlayer Menu:')
-        print('1. Play Game')
-        print('2. Cash Out')
-        print('3. Check-in')
-        print('4. Log Out')
-        choice = input('Select an option: ')
-
-        if choice == '1':
-            game.play_game()
-        elif choice == '2':
-            game.cash_out()
-        elif choice == '3':
-            check_in(username, users)
-        elif choice == '4':
-            print(f'Goodbye, {username}!')
-            break
-        else:
-            print('Invalid choice. Please select a valid option.')
-
-def admin_login(username, password, users):
-    """
-    Authenticate an admin user.
-
-    Args:
-        username (str): The username of the admin user.
-        password (str): The password of the admin user.
-        users (dict): A dictionary containing user information.
-
-    Returns:
-        bool: True if the provided credentials are valid for an admin user, False otherwise.
-    """
-    if username in users and users[username]['password'] == password and users[username]['role'] == 'admin':
-        return True
-    else:
-        return False
-
-def admin_menu(username, users):
+def admin_menu(username):
     """
     Display the admin menu and handle admin actions.
-
+    
+    This function presents a menu with options for an admin user, such as managing player coins,
+    adjust playable odds, and logging out. It handles the user's input and directs them to the
+    appropriate actions.
+    
     Args:
         username (str): The username of the admin user.
-        users (dict): A dictionary containing user information.
     """
-    game = CasinoGame()
     print(f'Welcome, {username} (Administrator)!')
+    game = CasinoGame()  # Initialize the game instance
 
     while True:
         print('\nAdmin Menu:')
@@ -176,10 +124,10 @@ def admin_menu(username, users):
         choice = input('Select an option: ')
 
         if choice == '1':
-            manage_coins(users)
+            manage_coins()
         elif choice == '2':
             new_odds = int(input("Enter new playable odds: "))
-            game.adjust_playable_odds(new_odds)
+            game.playable_odds = new_odds  # Update playable odds directly
             print(f"Playable odds changed to {new_odds}%")
         elif choice == '3':
             print(f'Goodbye, {username}!')
@@ -187,113 +135,125 @@ def admin_menu(username, users):
         else:
             print('Invalid choice. Please select a valid option.')
 
-def manage_coins(users):
+def manage_coins():
     """
     Manage player coins.
-
-    Args:
-        users (dict): A dictionary containing user information.
+    
+    This function allows an admin user to manage the coins of a player. It prompts the admin
+    for a player's username, an action (add/cashout), and the amount of coins. Based on the
+    action, it either adds or cashes out the specified number of coins for the player.
     """
     username = input('Enter player username: ')
     if username in users and users[username]['role'] == 'player':
         action = input('Enter action (add/cashout): ')
         coins = int(input('Enter coins: '))
-
         if action == 'add':
-            users[username]['coins'] += coins
+            users[username]['coins'] = users[username].get('coins', 0) + coins
             print(f'{coins} coins added to {username}.')
         elif action == 'cashout':
-            if users[username]['coins'] >= coins:
+            if 'coins' in users[username] and users[username]['coins'] >= coins:
                 users[username]['coins'] -= coins
                 print(f'{coins} coins cashed out from {username}.')
             else:
                 print('Insufficient coins to cash out.')
         else:
-            print('Invalid action.')
+            print('Invalid action or insufficient coins.')
     else:
         print(f'Player "{username}" is not a valid player.')
 
-def check_in(username, users):
+def user_login(username, password):
     """
-    Perform daily check-in for a player.
+    Authenticate a player user.
 
     Args:
-        username (str): The username of the player.
-        users (dict): A dictionary containing user information.
-    """
-    if users[username]['last_check_in'] == time.localtime().tm_yday:
-        print("You've already checked in today.")
-    else:
-        users[username]['last_check_in'] = time.localtime().tm_yday
-        users[username]['coins'] += 50
-        print("You've checked in and received 50 coins.")
+        username (str): The username of the player user.
+        password (str): The password of the player user.
 
-def register_user(users):
+    Returns:
+        bool: True if the provided credentials are valid for a player user, False otherwise.
     """
-    Register a new user.
+    return users.get(username, {}).get('password') == password and users.get(username, {}).get('role') == 'player'
+
+def admin_login(username, password):
+    """
+    Authenticate an admin user.
 
     Args:
-        users (dict): A dictionary containing user information.
+        username (str): The username of the admin user.
+        password (str): The password of the admin user.
+
+    Returns:
+        bool: True if the provided credentials are valid for an admin user, False otherwise.
     """
-    new_username = input("Enter a new username: ")
-    new_password = input("Enter a password: ")
-    role = input("Enter role (admin/player): ")
-    users[new_username] = {'password': new_password, 'role': role, 'coins': 200, 'last_check_in': -1}
-    print(f"User {new_username} registered successfully.")
+    return users.get(username, {}).get('password') == password and users.get(username, {}).get('role') == 'admin'
+
+def player_menu(username):
+    """
+    Display the player menu and handle player actions.
+
+    Args:
+        username (str): The username of the player user.
+    """
+    game = CasinoGame()
+    print(f'Welcome, {username} (Player)!')
+    while True:
+        print('\nPlayer Menu:')
+        print('1. Play Game')
+        print('2. Cash Out')
+        print('3. Log Out')
+        choice = input('Select an option: ')
+        if choice == '1':
+            game.play_game()
+        elif choice == '2':
+            game.cash_out()
+        elif choice == '3':
+            print(f'Goodbye, {username}!')
+            break
+        else:
+            print('Invalid choice. Please select a valid option.')
+
 def main():
     """
-    Start the Casino Game simulation.
+    The main function to run the Casino Game simulation.
 
-    This function initializes the Casino Game simulation by welcoming the user,
-    displaying the current time, and setting up user data including admin and player accounts.
-
-    User Data:
-        - Admin user:
-            Username: admin
-            Password: adminpass
-            Role: admin
-            Coins: 9999999
-            Last check-in: -1 (not checked in)
-
-        - Player user:
-            Username: player1
-            Password: playerpass
-            Role: player
-            Coins: 200
-            Last check-in: -1 (not checked in)
+    This function welcomes the user to the Casino Game, provides a menu to select a role
+    (admin/player/quit), and directs the user to the appropriate menus based on their choice.
     """
     print('Welcome to the Casino Game!')
     current_time = time.ctime()
     print(f'Current time: {current_time}')
-
-    users = {
-        'admin': {'password': 'adminpass', 'role': 'admin', 'coins': 9999999, 'last_check_in': -1},
-        'player1': {'password': 'playerpass', 'role': 'player', 'coins': 200, 'last_check_in': -1}
-    }
+    
     while True:
-        choice = input('Enter your choice (login/register/quit): ')
-
-        if choice == 'login':
-            user_type = input('Are you an admin or player? ').lower()
-            user_username = input('Enter username: ')
-            user_password = input('Enter password: ')
-
-            if user_type == 'admin' and admin_login(user_username, user_password, users):
-                admin_menu(user_username, users)
-            elif user_type == 'player' and user_login(user_username, user_password, users):
-                player_menu(user_username, users)
+        choice = input('Enter your role (admin/player/quit): ')
+        
+        if choice == 'admin':
+            admin_username = input('Enter admin username: ')
+            admin_password = input('Enter admin password: ')
+            if admin_login(admin_username, admin_password):
+                admin_menu(admin_username)
             else:
-                print('Invalid credentials.')
-
-        elif choice == 'register':
-            register_user(users)
-
+                print('Invalid admin credentials.')
+        elif choice == 'player':
+            player_username = input('Enter player username: ')
+            player_password = input('Enter player password: ')
+            if user_login(player_username, player_password):
+                player_menu(player_username)
+            else:
+                print('Invalid player credentials.')
         elif choice == 'quit':
             print('Goodbye!')
             break
-
         else:
-            print('Invalid choice. Please select a valid option.')
+            print('Invalid choice. Please select a valid role.')
 
 if __name__ == '__main__':
-    main()
+    main()  # Start the program execution by calling the main() function
+
+# Get user info for 'player'
+user_info = users.get('player')
+if user_info:
+    print(f"Username: {'player'}")
+    print(f"Role: {user_info['role']}")
+    print(f"Coins: {user_info.get('coins', 0)}")
+else:
+    print("User not found.")
