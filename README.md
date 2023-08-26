@@ -1,82 +1,55 @@
 # Casino Game
 
-Welcome to the Casino Game! This Python module simulates an online casino game with user authentication and role-based access. It includes classes and functions for playing casino games, managing user coins, and handling payouts.
-
-## Table of Contents
-
-- [Description](#description)
-- [Features](#features)
-- [Getting Started](#getting-started)
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Documentation](#documentation)
-- [Contributing](#contributing)
-- [License](#license)
-
-## Description
-
-The Casino Game module provides an interactive simulation of a casino game where users can play games, win coins, and manage their winnings. The game supports two user roles: administrators and players. Administrators have the ability to manage player coins, adjust playable odds, and perform administrative tasks. Players can play games and cash out their winnings.
+This Python program simulates an online casino game with user authentication, role-based access, and various casino games to play. It includes classes and functions for managing user accounts, playing casino games, tracking user coins, and handling payouts.
 
 ## Features
 
-- User authentication for administrators and players.
-- Role-based access control for different functionalities.
-- Simulated casino game with odds-based winning.
-- Coin management for players.
-- Adjustable playable odds for administrators.
+- **Authentication and Role-based Access:** The program allows both admin and player users to log in with their respective credentials.
 
-## Getting Started
+- **Main Menu:** The main menu presents options for admin login, player login, and quitting the game.
 
-### Prerequisites
+- **Admin Menu:** Once logged in as an admin, you can manage player coins, adjust playable odds, and log out.
+
+- **Player Menu:** After logging in as a player, you can play various casino games, check your coin balance, add money (re-up), perform daily check-ins, redeem winnings, and log out.
+
+- **Casino Games:**
+  - Ding Ding King: A game where players can win coins based on specified odds.
+  - Blackjack Attack: Simulates a blackjack game.
+  - Spin To Win: A slot machine game.
+  
+- **Coin Management:** Admin users can manage player coins by adding or cashing out coins.
+
+- **Adjustable Playable Odds:** Admin users can adjust the odds of winning casino games.
+
+- **Daily Check-in:** Players can perform a daily check-in to earn coins, limited to once every 24 hours.
+
+## How to Play
+
+1. Run the `Game_1.py` script using a Python interpreter.
+2. Select the appropriate user role (admin/player) from the main menu.
+3. Follow the prompts to log in with your username and password.
+4. Depending on your role, you'll have access to admin or player features.
+5. For admin users, you can manage coins and adjust odds.
+6. For player users, you can play various casino games, manage coins, and perform daily check-ins.
+
+## Dependencies
 
 - Python 3.x
 
-### Installation
-
-1. Clone this repository:
-
-   ```bash
-   git clone https://github.com/yourusername/casino-game.git
-   ```
-
-2. Navigate to the project directory:
-
-   ```bash
-   cd casino-game
-   ```
-
-3. Run the Casino Game module:
-
-   ```bash
-   python casino_game.py
-   ```
-
 ## Usage
 
-1. Upon running the `casino_game.py` script, you'll be prompted to choose your role: admin, player, or quit.
-
-2. If you select "admin," you'll need to provide admin credentials (username and password) to access admin functionalities. You can manage player coins and adjust playable odds.
-
-3. If you select "player," you'll need to provide player credentials (username and password) to access player functionalities. You can play games and cash out winnings.
-
-4. Follow the on-screen instructions to play games, manage coins, and perform other actions.
-
-## Documentation
-
-- The `RandomNumberSelector` class generates random numbers based on specified odds.
-- The `CasinoGame` class represents the main casino game, with functions for playing games, managing coins, and more.
-- User authentication functions, such as `user_login` and `admin_login`, authenticate player and admin users.
-- The `admin_menu` and `player_menu` functions present menus and handle actions based on user roles.
+1. Clone or download the repository.
+2. Run the `Game_1.py` script using a Python interpreter.
+3. Follow the on-screen prompts to log in and interact with the casino game.
 
 ## Contributing
 
-Contributions to the Casino Game project are welcome! If you find any issues or want to enhance the project, feel free to submit pull requests or report issues in the GitHub repository.
+Contributions are welcome! If you'd like to enhance the game, add more features, or fix bugs, feel free to fork the repository and create a pull request.
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
-Feel free to customize this README according to your project structure and details. It should provide users with a clear understanding of what the project does, how to use it, and how to contribute.
+Enjoy the excitement of playing casino games with this Python program! Have fun and play responsibly.
