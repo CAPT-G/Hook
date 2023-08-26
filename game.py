@@ -34,13 +34,27 @@ class CasinoGame:
             _number_selector (RandomNumberSelector): An instance of the RandomNumberSelector
                                                      class used to generate random numbers for games.
         """
+        self.last_active_times = {} #Store last active times for players
         self.user_coins = 200
         self.user_winnings = 0
         self.max_payout = 2000
         self.purchase_amount = 200
         self.playable_odds = 10
         self._number_selector = RandomNumberSelector(odds=self.playable_odds)
+    def daily_check_in(self, username):
+        """
+        Perform daily check-in for a player.
 
+        Args:
+            username (str): The username of the player.
+
+        Returns:
+            bool: True if the player is eligible for daily check-in, False otherwise.
+        """
+        current_time = time.time()
+        last_active_time = self.last_active_times.get(username, 0)
+
+        # Check if 24 hours have passed since the last check-in
     def play_game(self):
         """
         Play a casino game.
